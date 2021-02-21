@@ -18,8 +18,6 @@ package com.ejar.wololo;
 
 import org.sqlite.SQLiteConnection;
 
-import java.sql.Connection;
-
 public class TauntsDatabase {
 
     private static TauntsDatabase instance = null;
