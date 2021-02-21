@@ -16,12 +16,9 @@
 
 package com.ejar.wololo;
 
-import com.ejar.wololo.options.BotOptions;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.File;
 
 public class App {
 
@@ -33,27 +30,15 @@ public class App {
 
         try {
 
-            BotOptions botOptions = null;
-
-            File configurationFile = new File("./config.yml");
-
-            if (!configurationFile.exists()) {
-
-                botOptions = new BotOptions();
-                botOptions.writeConfigurationFile(configurationFile);
-
-            }
-
-            TauntBot bot = new TauntBot(botOptions);
+            TauntBot bot = new TauntBot();
+            bot.run();
 
         } catch (Throwable e) {
 
-            logger.error("Unhandled exception: {}", e.getMessage());
-            logger.trace("{}", ExceptionUtils.getStackTrace(e));
+            logger.error("App exception: {}", e.getMessage());
+            logger.debug("{}", ExceptionUtils.getStackTrace(e));
 
         }
-
-
 
     }
 

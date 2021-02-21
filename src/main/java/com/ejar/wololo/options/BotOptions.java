@@ -18,13 +18,14 @@ package com.ejar.wololo.options;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
 import java.io.File;
 import java.util.Arrays;
 
 public class BotOptions {
 
-    private static final ObjectMapper YML_OBJECT_MAPPER = new ObjectMapper(new YAMLFactory());
+    private ObjectMapper YML_OBJECT_MAPPER;
 
     private ThreadPoolOptions threadPoolOptions;
     private DiscordOptions discordOptions;
@@ -43,6 +44,13 @@ public class BotOptions {
         this.discordOptions = new DiscordOptions();
         this.operatingMode = OperatingMode.REPLY.getMode();
         this.listeningMessageChannels = new String[0];
+
+        YAMLFactory yf = new YAMLFactory();
+
+        // use platform dependent line endings for Notepad's sake
+        yf.configure(YAMLGenerator.Feature.USE_PLATFORM_LINE_BREAKS, true);
+
+        this.YML_OBJECT_MAPPER = new ObjectMapper(yf);
 
     }
 

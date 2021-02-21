@@ -21,7 +21,7 @@
     <commons-lang.version>3.5</commons-lang.version>
     <jackson-databind.version>2.2.3</jackson-databind.version>
     <jackson-yaml.version>2.10.4</jackson-yaml.version>
-    <jda.version>3.8.3_464</jda.version>
+    <jda.version>4.2.0_228</jda.version>
 
     <!-- Maven plugin versions -->
 
@@ -51,6 +51,24 @@
     </repository>
   </repositories>
 
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <prof.dir>src/main/resources/dev/</prof.dir>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod</id>
+      <properties>
+        <prof.dir>src/main/resources/prod/</prof.dir>
+      </properties>
+    </profile>
+  </profiles>
+
   <dependencies>
 
     <dependency>
@@ -68,6 +86,12 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
+      <version>${apache-log4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
       <version>${apache-log4j.version}</version>
     </dependency>
 
@@ -111,8 +135,14 @@
   </dependencies>
 
   <build>
-    <plugins>
 
+    <resources>
+      <resource>
+        <directory>${prof.dir}</directory>
+      </resource>
+    </resources>
+
+    <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>${maven-assembly-plugin.version}</version>
@@ -196,7 +226,6 @@
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>${maven-project-info-reports-plugin.version}</version>
       </plugin>
-
     </plugins>
   </build>
 </project>

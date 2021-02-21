@@ -19,11 +19,13 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%-10t] %c{1} - %msg%n" />
         </Console>
-        <RollingFile name="RollingFile" filename="./dmb_logs/dmb.log"
-                     filepattern="./wololo_logs/wololo-%d{yyyy-MM-dd-HH:mm:ss}.log">
-            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+        <RollingFile name="RollingFile" filename="./taunt_logs/wololo.log"
+                     filepattern="./taunt_logs/wololo-%d{yyyy-MM-dd-HH:mm:ss}.log">
+            <ThresholdFilter level="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%-10t] %c{1} - %msg%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="5 MB" />
             </Policies>
@@ -31,6 +33,8 @@
         </RollingFile>
     </Appenders>
     <Loggers>
+        <Logger name="net.dv8tion" level="INFO">
+        </Logger>
         <Root level="all">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />

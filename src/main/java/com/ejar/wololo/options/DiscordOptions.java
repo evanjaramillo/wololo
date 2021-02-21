@@ -20,6 +20,7 @@ public class DiscordOptions {
 
     private String token;
     private boolean compressionEnabled;
+    private boolean autoReconnect;
 
     public DiscordOptions() {
 
@@ -58,12 +59,25 @@ public class DiscordOptions {
 
     }
 
+    public boolean isAutoReconnect() {
+
+        return autoReconnect;
+
+    }
+
+    public void setAutoReconnect(boolean autoReconnect) {
+
+        this.autoReconnect = autoReconnect;
+
+    }
+
     @Override
     public String toString() {
 
         return "DiscordOptions{" +
-                "token='" + "** REDACTED **" + '\'' +
+                "token='" + token + '\'' +
                 ", compressionEnabled=" + compressionEnabled +
+                ", autoReconnect=" + autoReconnect +
                 '}';
 
     }
