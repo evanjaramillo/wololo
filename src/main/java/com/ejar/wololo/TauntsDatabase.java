@@ -82,7 +82,7 @@ public class TauntsDatabase {
             logger.debug("got from database: {}", s);
 
         } finally {
-            
+
             statement.close();
             this.queryLock.unlock();
 
