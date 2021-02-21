@@ -16,15 +16,37 @@
 
 package com.ejar.wololo;
 
-import org.sqlite.SQLiteConnection;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.sql.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TauntsDatabase {
 
+    private final Logger logger = LogManager.getLogger();
+
     private static TauntsDatabase instance = null;
 
-    private SQLiteConnection connection;
+    private Connection connection;
+    private ReentrantLock queryLock;
 
-    private TauntsDatabase() {}
+    private TauntsDatabase() {
+
+        try {
+
+            this.queryLock = new ReentrantLock();
+            this.connection = DriverManager.getConnection("jdbc:sqlite::resource:taunts.db");
+
+        } catch (SQLException e) {
+
+            logger.error("Failed to load SQLite database of taunts.");
+            logger.debug("{}", ExceptionUtils.getStackTrace(e));
+
+        }
+
+    }
 
     public static TauntsDatabase getInstance() {
 
@@ -35,6 +57,38 @@ public class TauntsDatabase {
         }
 
         return instance;
+
+    }
+
+    public String getTauntForInteger(int lookup) throws SQLException {
+
+        this.queryLock.lock();
+
+        Statement statement =
+                this.connection.createStatement();
+
+        String s = null;
+
+        try {
+
+            ResultSet set = statement.executeQuery("select text from taunts where integer like " + lookup + ";");
+
+            while (set.next()) {
+
+                s = set.getString(1);
+
+            }
+
+            logger.debug("got from database: {}", s);
+
+        } finally {
+            
+            statement.close();
+            this.queryLock.unlock();
+
+        }
+
+        return s;
 
     }
 

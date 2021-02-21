@@ -18,18 +18,23 @@ package com.ejar.wololo;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.sql.SQLException;
 
 public class MessageLexer implements Runnable {
 
     private final Logger logger = LogManager.getLogger();
 
     private MessageReceivedEvent event;
+    private TauntsDatabase tauntsDatabase;
 
     public MessageLexer(MessageReceivedEvent event) {
 
         this.event = event;
+        this.tauntsDatabase = TauntsDatabase.getInstance();
 
     }
 
@@ -49,6 +54,12 @@ public class MessageLexer implements Runnable {
         logger.debug("Found integers (len={}): {}", embeddedIntegers.length,
                 ArrayUtils.toString(embeddedIntegers));
 
+        if (embeddedIntegers.length == 0) {
+
+            return;
+
+        }
+
         String messageOutput = messageInput;
 
         for (int i = 0; i < embeddedIntegers.length; i++) {
@@ -63,7 +74,23 @@ public class MessageLexer implements Runnable {
 
             int key = Integer.parseInt(s);
 
-            messageOutput = messageOutput.replaceFirst(embeddedIntegers[i], " _PARSED_ ");
+            String replacement = null;
+
+            try {
+
+                replacement = this.tauntsDatabase.getTauntForInteger(key);
+
+            } catch (SQLException e) {
+
+                logger.warn("Unable to get taunt for key: {}", key);
+                logger.debug("{}", ExceptionUtils.getStackTrace(e));
+
+                continue;
+
+            }
+
+
+            messageOutput = messageOutput.replaceFirst(embeddedIntegers[i], replacement);
 
         }
 
