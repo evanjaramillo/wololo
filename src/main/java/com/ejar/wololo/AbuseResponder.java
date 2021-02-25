@@ -16,12 +16,12 @@
 
 package com.ejar.wololo;
 
-import com.ejar.wololo.interfaces.IResponder;
+import com.ejar.wololo.interfaces.IPrivateResponder;
 import net.dv8tion.jda.api.entities.User;
 
-public class AbuseResponder implements IResponder {
+public class AbuseResponder implements IPrivateResponder {
 
-    private User abusiveUser;
+    private final User abusiveUser;
 
     public AbuseResponder(User abusiveUser) {
 
@@ -32,7 +32,13 @@ public class AbuseResponder implements IResponder {
     @Override
     public void respond() {
 
-        //abusiveUser
+        abusiveUser.openPrivateChannel().queue(channel -> {
+
+            channel.sendMessage("Hello " + abusiveUser.getName() +
+                    ". We have detected that you are abusing your Wololo bot privileges. " +
+                    "_Please don't..._").queue();
+
+        });
 
     }
 

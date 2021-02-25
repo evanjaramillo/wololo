@@ -16,7 +16,7 @@
 
 package com.ejar.wololo.interfaces;
 
-public interface IResponder {
+public interface IPrivateResponder {
 
     public void respond();
 

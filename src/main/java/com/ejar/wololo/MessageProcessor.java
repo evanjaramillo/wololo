@@ -16,7 +16,6 @@
 
 package com.ejar.wololo;
 
-import com.ejar.wololo.interfaces.IResponder;
 import com.ejar.wololo.options.BotOptions;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.apache.commons.lang3.ArrayUtils;
@@ -67,8 +66,16 @@ public class MessageProcessor implements Runnable {
             logger.debug("Found integers (len={}): {}", embeddedIntegers.length,
                     ArrayUtils.toString(embeddedIntegers));
 
-            if (embeddedIntegers.length == 0 ||
-                embeddedIntegers.length > this.options.getMaxMessageTauntCount()) {
+            if (embeddedIntegers.length == 0) {
+
+                return;
+
+            }
+
+            if ( embeddedIntegers.length > this.options.getMaxMessageTauntCount()) {
+
+                AbuseResponder responder = new AbuseResponder(messageReceivedEvent.getAuthor());
+                responder.respond();
 
                 return;
 
@@ -119,7 +126,6 @@ public class MessageProcessor implements Runnable {
                 return;
 
             }
-
 
             messageReceivedEvent.getGuild().getTextChannelById(messageReceivedEvent.getMessage().getTextChannel().getId())
                     .sendMessage(messageOutput).reference(messageReceivedEvent.getMessage()).queue();
