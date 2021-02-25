@@ -71,9 +71,9 @@ public class TauntsDatabase {
 
         try {
 
-            ResultSet set = statement.executeQuery("select text from taunts where integer like " + lookup + ";");
+            ResultSet set = statement.executeQuery("select taunt from taunts where id = " + lookup + ";");
 
-            while (set.next()) {
+            if (set.next()) {
 
                 s = set.getString(1);
 

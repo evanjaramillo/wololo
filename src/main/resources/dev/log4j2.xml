@@ -33,8 +33,6 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="net.dv8tion" level="INFO">
-        </Logger>
         <Root level="all">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />

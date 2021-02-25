@@ -31,6 +31,7 @@ public class BotOptions {
     private DiscordOptions discordOptions;
     private String[] listeningMessageChannels;
     private String operatingMode;
+    private int maxMessageTauntCount;
 
     public BotOptions() {
 
@@ -44,6 +45,7 @@ public class BotOptions {
         this.discordOptions = new DiscordOptions();
         this.operatingMode = OperatingMode.REPLY.getMode();
         this.listeningMessageChannels = new String[0];
+        this.maxMessageTauntCount = 10;
 
         YAMLFactory yf = new YAMLFactory();
 
@@ -114,14 +116,27 @@ public class BotOptions {
 
     }
 
+    public int getMaxMessageTauntCount() {
+
+        return maxMessageTauntCount;
+
+    }
+
+    public void setMaxMessageTauntCount(int maxMessageTauntCount) {
+
+        this.maxMessageTauntCount = maxMessageTauntCount;
+
+    }
+
     @Override
     public String toString() {
 
         return "BotOptions{" +
-                "threadPoolOptions=" + threadPoolOptions +
+                ", threadPoolOptions=" + threadPoolOptions +
                 ", discordOptions=" + discordOptions +
                 ", listeningMessageChannels=" + Arrays.toString(listeningMessageChannels) +
                 ", operatingMode='" + operatingMode + '\'' +
+                ", maxMessageTauntCount=" + maxMessageTauntCount +
                 '}';
 
     }

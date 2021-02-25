@@ -18,7 +18,6 @@ package com.ejar.wololo.options;
 
 public class ThreadPoolOptions {
 
-    private int threadCount;
     private String threadNomenclature;
     private boolean daemon;
 
@@ -30,21 +29,8 @@ public class ThreadPoolOptions {
 
     private void init() {
 
-        this.threadCount = Runtime.getRuntime().availableProcessors();
         this.threadNomenclature = "wololo-bot-%d";
         this.daemon = true;
-
-    }
-
-    public int getThreadCount() {
-
-        return threadCount;
-
-    }
-
-    public void setThreadCount(int threadCount) {
-
-        this.threadCount = threadCount;
 
     }
 
@@ -75,7 +61,6 @@ public class ThreadPoolOptions {
     @Override
     public String toString() {
         return "ThreadPoolOptions{" +
-                "threadCount=" + threadCount +
                 ", threadNomenclature='" + threadNomenclature + '\'' +
                 ", daemon=" + daemon +
                 '}';

@@ -51,8 +51,7 @@ public class MessageListener extends ListenerAdapter {
                 .daemon(threadingOptions.isDaemon())
                 .build();
 
-        this.executorService = Executors.newFixedThreadPool(threadingOptions.getThreadCount(),
-                tf);
+        this.executorService = Executors.newCachedThreadPool(tf);
 
     }
 
@@ -70,7 +69,7 @@ public class MessageListener extends ListenerAdapter {
         if (ArrayUtils.contains(this.botOptions.getListeningMessageChannels(),
                 channel)) {
 
-            this.executorService.submit(new MessageLexer(event));
+            this.executorService.submit(new MessageProcessor(event, this.botOptions));
 
         }
 
