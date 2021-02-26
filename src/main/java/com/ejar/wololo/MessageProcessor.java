@@ -93,7 +93,19 @@ public class MessageProcessor implements Runnable {
 
                 }
 
-                int key = Integer.parseInt(s);
+                int key = 0;
+
+                try {
+
+                    key = Integer.parseInt(s);
+
+                } catch (Exception e) {
+
+                    logger.warn("Failed to parse integer: {}", e.getMessage());
+
+                    continue;
+
+                }
 
                 String replacement = null;
 
