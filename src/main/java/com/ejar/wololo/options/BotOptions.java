@@ -31,6 +31,7 @@ public class BotOptions {
     private DiscordOptions discordOptions;
     private String[] listeningMessageChannels;
     private String operatingMode;
+    private char activationCharacter;
     private int maxMessageTauntCount;
 
     public BotOptions() {
@@ -128,16 +129,28 @@ public class BotOptions {
 
     }
 
+    public char getActivationCharacter() {
+
+        return activationCharacter;
+
+    }
+
+    public void setActivationCharacter(char activationCharacter) {
+
+        this.activationCharacter = activationCharacter;
+
+    }
+
     @Override
     public String toString() {
 
-        return "BotOptions{" +
-                ", threadPoolOptions=" + threadPoolOptions +
-                ", discordOptions=" + discordOptions +
-                ", listeningMessageChannels=" + Arrays.toString(listeningMessageChannels) +
-                ", operatingMode='" + operatingMode + '\'' +
-                ", maxMessageTauntCount=" + maxMessageTauntCount +
-                '}';
+        return "BotOptions{threadPoolOptions=" +
+               threadPoolOptions + ", discordOptions=" +
+               discordOptions + ", listeningMessageChannels=" +
+               Arrays.toString(listeningMessageChannels) + ", operatingMode='" +
+               operatingMode + '\'' + ", activationCharacter=" +
+               activationCharacter + ", maxMessageTauntCount=" +
+               maxMessageTauntCount + '}';
 
     }
 

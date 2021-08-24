@@ -16,35 +16,26 @@
 
 package com.ejar.wololo;
 
+import com.ejar.wololo.interfaces.ITauntProcessor;
 import com.ejar.wololo.options.BotOptions;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
+import java.util.Map;
 
 public class MessageProcessor implements Runnable {
 
     private final Logger logger = LogManager.getLogger();
 
-    private MessageReceivedEvent messageReceivedEvent;
-    private BotOptions options;
-    private TauntsDatabase tauntsDatabase;
+    private final MessageReceivedEvent messageReceivedEvent;
+    private final BotOptions options;
 
     public MessageProcessor(MessageReceivedEvent event, BotOptions options) {
 
-        this.init();
-
         this.messageReceivedEvent = event;
         this.options = options;
-
-    }
-
-    private void init() {
-
-        this.tauntsDatabase = TauntsDatabase.getInstance();
 
     }
 
@@ -62,85 +53,36 @@ public class MessageProcessor implements Runnable {
             String messageInput = this.messageReceivedEvent.getMessage().getContentRaw();
             logger.debug("Parsing Message: {}", messageInput);
 
-            String[] embeddedIntegers = messageInput.split("[^0-9]+");
-            logger.debug("Found integers (len={}): {}", embeddedIntegers.length,
-                    ArrayUtils.toString(embeddedIntegers));
+            char activationChar = this.options.getActivationCharacter();
 
-            if (embeddedIntegers.length == 0) {
+            if (!messageInput.contains("" + activationChar)) {
 
+                // no commands present
                 return;
 
             }
 
-            if ( embeddedIntegers.length > this.options.getMaxMessageTauntCount()) {
+            ITauntProcessor processor = new DefaultTauntProcessor();
 
-                AbuseResponder responder = new AbuseResponder(messageReceivedEvent.getAuthor());
-                responder.respond();
+            Map<String, String> taunts = processor.processTaunts(messageInput, activationChar);
 
+            if (taunts == null || taunts.isEmpty()) {
+
+                // nothing to do.
                 return;
 
             }
 
-            String messageOutput = messageInput;
+            String reply = messageInput;
 
-            boolean outputChanged = false;
+            for (Map.Entry<String, String> entry : taunts.entrySet()) {
 
-            for (String s : embeddedIntegers) {
-
-                if (s.isEmpty()) {
-
-                    continue;
-
-                }
-
-                int key = 0;
-
-                try {
-
-                    key = Integer.parseInt(s);
-
-                } catch (Exception e) {
-
-                    logger.warn("Failed to parse integer: {}", e.getMessage());
-
-                    continue;
-
-                }
-
-                String replacement = null;
-
-                try {
-
-                    replacement = this.tauntsDatabase.getTauntForInteger(key);
-
-                } catch (SQLException e) {
-
-                    logger.warn("Unable to get taunt for key: {}", key);
-                    logger.debug("{}", ExceptionUtils.getStackTrace(e));
-
-                    continue;
-
-                }
-
-                if (replacement == null) {
-
-                    continue;
-
-                }
-
-                outputChanged = true;
-                messageOutput = messageOutput.replaceFirst(s, replacement);
-
-            }
-
-            if (!outputChanged) {
-
-                return;
+                reply = reply.replaceAll(entry.getKey(), entry.getValue());
 
             }
 
             messageReceivedEvent.getGuild().getTextChannelById(messageReceivedEvent.getMessage().getTextChannel().getId())
-                    .sendMessage(messageOutput).reference(messageReceivedEvent.getMessage()).queue();
+                    .sendMessage(reply).reference(messageReceivedEvent.getMessage()).queue();
 
         } catch (Exception e) {
 

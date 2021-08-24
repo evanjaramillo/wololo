@@ -37,7 +37,7 @@ public class MessageListener extends ListenerAdapter {
 
     private final Logger logger = LogManager.getLogger();
 
-    private BotOptions botOptions;
+    private final BotOptions botOptions;
     private final ExecutorService executorService;
 
     public MessageListener(BotOptions options) {
