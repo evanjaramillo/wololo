@@ -34,9 +34,11 @@ public class AbuseResponder implements IPrivateResponder {
 
         abusiveUser.openPrivateChannel().queue(channel -> {
 
-            channel.sendMessage("Hello " + abusiveUser.getName() +
-                    ". We have detected that you are abusing your Wololo bot privileges. " +
-                    "_Please don't..._").queue();
+            channel.sendMessage("Hello! It's me, your neighborhood monk. I'm a simple man with 10 fingers. " +
+                                "At the rate that you're sending messages, it's hard for me to keep up. In order to " +
+                                "serve everyone equally, I'm going to temporarily excommunicate you. While you're" +
+                                " excommunicated, you cannot interact with me in any way. Please wait a while and try " +
+                                "again.").queue();
 
         });
 

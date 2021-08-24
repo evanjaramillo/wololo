@@ -18,6 +18,7 @@ package com.ejar.wololo;
 
 import com.ejar.wololo.interfaces.ITauntProcessor;
 import com.ejar.wololo.options.BotOptions;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -31,11 +32,13 @@ public class MessageProcessor implements Runnable {
 
     private final MessageReceivedEvent messageReceivedEvent;
     private final BotOptions options;
+    private final RateLimiterDatabase rateLimiterDatabase;
 
     public MessageProcessor(MessageReceivedEvent event, BotOptions options) {
 
         this.messageReceivedEvent = event;
         this.options = options;
+        this.rateLimiterDatabase = RateLimiterDatabase.getInstance();
 
     }
 
@@ -51,7 +54,6 @@ public class MessageProcessor implements Runnable {
             }
 
             String messageInput = this.messageReceivedEvent.getMessage().getContentRaw();
-            logger.debug("Parsing Message: {}", messageInput);
 
             char activationChar = this.options.getActivationCharacter();
 
@@ -61,6 +63,7 @@ public class MessageProcessor implements Runnable {
                 return;
 
             }
+
 
             ITauntProcessor processor = new DefaultTauntProcessor();
 
@@ -75,9 +78,25 @@ public class MessageProcessor implements Runnable {
 
             String reply = messageInput;
 
+            User author = this.messageReceivedEvent.getAuthor();
+
             for (Map.Entry<String, String> entry : taunts.entrySet()) {
 
-                reply = reply.replaceAll(entry.getKey(), entry.getValue());
+                while (reply.contains(entry.getKey())) {
+
+                    if (!this.rateLimiterDatabase.tryApiConsume(author) ||
+                        !this.rateLimiterDatabase.hasAvailableApiTokens(author)) {
+
+                        AbuseResponder abuse = new AbuseResponder(author);
+                        abuse.respond();
+
+                        return;
+
+                    }
+
+                    reply = reply.replaceFirst(entry.getKey(), entry.getValue());
+
+                }
 
             }
 

@@ -19,6 +19,7 @@ package com.ejar.wololo;
 import com.ejar.wololo.options.BotOptions;
 import com.ejar.wololo.options.ThreadPoolOptions;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -39,6 +40,7 @@ public class MessageListener extends ListenerAdapter {
 
     private final BotOptions botOptions;
     private final ExecutorService executorService;
+    private final RateLimiterDatabase rateLimiterDatabase;
 
     public MessageListener(BotOptions options) {
 
@@ -52,13 +54,24 @@ public class MessageListener extends ListenerAdapter {
                 .build();
 
         this.executorService = Executors.newCachedThreadPool(tf);
+        this.rateLimiterDatabase = RateLimiterDatabase.getInstance();
 
     }
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
 
-        if (event.getAuthor().isBot()) {
+        User author = event.getAuthor();
+
+        if (author.isBot()) {
+
+            return;
+
+        }
+
+        this.rateLimiterDatabase.registerRateLimit(author);
+
+        if (!this.rateLimiterDatabase.hasAvailableApiTokens(author)) {
 
             return;
 

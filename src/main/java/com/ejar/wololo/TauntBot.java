@@ -106,6 +106,9 @@ public class TauntBot {
 
         DiscordOptions discordOptions = this.options.getDiscordOptions();
 
+        RateLimiterDatabase rateLimiter = RateLimiterDatabase.getInstance();
+        rateLimiter.setOptions(this.options.getRateLimiterOptions()); // initial set of options.
+
         this.jda = JDABuilder.createDefault(discordOptions.getToken())
                 .addEventListeners(new MessageListener(this.options))
                 .setCompression(discordOptions.isCompressionEnabled() ? Compression.ZLIB : Compression.NONE)

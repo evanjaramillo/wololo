@@ -29,10 +29,9 @@ public class BotOptions {
 
     private ThreadPoolOptions threadPoolOptions;
     private DiscordOptions discordOptions;
+    private RateLimiterOptions rateLimiterOptions;
     private String[] listeningMessageChannels;
-    private String operatingMode;
     private char activationCharacter;
-    private int maxMessageTauntCount;
 
     public BotOptions() {
 
@@ -44,9 +43,9 @@ public class BotOptions {
 
         this.threadPoolOptions = new ThreadPoolOptions();
         this.discordOptions = new DiscordOptions();
-        this.operatingMode = OperatingMode.REPLY.getMode();
+        this.rateLimiterOptions = new RateLimiterOptions();
         this.listeningMessageChannels = new String[0];
-        this.maxMessageTauntCount = 10;
+        this.activationCharacter = '/';
 
         YAMLFactory yf = new YAMLFactory();
 
@@ -105,30 +104,6 @@ public class BotOptions {
 
     }
 
-    public String getOperatingMode() {
-
-        return operatingMode;
-
-    }
-
-    public void setOperatingMode(String operatingMode) {
-
-        this.operatingMode = operatingMode;
-
-    }
-
-    public int getMaxMessageTauntCount() {
-
-        return maxMessageTauntCount;
-
-    }
-
-    public void setMaxMessageTauntCount(int maxMessageTauntCount) {
-
-        this.maxMessageTauntCount = maxMessageTauntCount;
-
-    }
-
     public char getActivationCharacter() {
 
         return activationCharacter;
@@ -141,16 +116,27 @@ public class BotOptions {
 
     }
 
+    public RateLimiterOptions getRateLimiterOptions() {
+
+        return rateLimiterOptions;
+
+    }
+
+    public void setRateLimiterOptions(RateLimiterOptions rateLimiterOptions) {
+
+        this.rateLimiterOptions = rateLimiterOptions;
+
+    }
+
     @Override
     public String toString() {
 
-        return "BotOptions{threadPoolOptions=" +
-               threadPoolOptions + ", discordOptions=" +
-               discordOptions + ", listeningMessageChannels=" +
-               Arrays.toString(listeningMessageChannels) + ", operatingMode='" +
-               operatingMode + '\'' + ", activationCharacter=" +
-               activationCharacter + ", maxMessageTauntCount=" +
-               maxMessageTauntCount + '}';
+        return "BotOptions{" + "threadPoolOptions="
+               + threadPoolOptions + ", discordOptions="
+               + discordOptions + ", rateLimiterOptions="
+               + rateLimiterOptions + ", listeningMessageChannels="
+               + Arrays.toString(listeningMessageChannels)
+               + ", activationCharacter=" + activationCharacter + '}';
 
     }
 
