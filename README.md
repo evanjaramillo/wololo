@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/evanjaramillo/wololo/blob/master/assets/monk.jpeg" width="50%"/>
+    <img src="https://github.com/evanjaramillo/wololo/blob/master/assets/monk.jpeg"/>
 </p>
 <h1 align="center">Wololo!</h1>
 
