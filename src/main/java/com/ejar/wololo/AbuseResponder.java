@@ -16,10 +16,10 @@
 
 package com.ejar.wololo;
 
-import com.ejar.wololo.interfaces.IPrivateResponder;
+import com.ejar.wololo.interfaces.IResponder;
 import net.dv8tion.jda.api.entities.User;
 
-public class AbuseResponder implements IPrivateResponder {
+public class AbuseResponder implements IResponder {
 
     private final User abusiveUser;
 

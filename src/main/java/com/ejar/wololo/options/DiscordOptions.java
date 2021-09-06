@@ -32,6 +32,7 @@ public class DiscordOptions {
 
         this.token = "NO TOKEN!";
         this.compressionEnabled = true;
+        this.autoReconnect = true;
 
     }
 
