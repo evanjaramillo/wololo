@@ -183,7 +183,7 @@
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
-              <finalName>wololo-${project.version}</finalName>
+              <finalName>wololo-bot</finalName>
               <appendAssemblyId>false</appendAssemblyId>
               <attach>false</attach>
             </configuration>

@@ -1,2 +1,12 @@
 language: java
 script: mvn clean install -P prod
+deploy:
+  on:
+    tags: true
+  overwrite: true
+  provider: releases
+  api_key:
+    secure: WUi+b7dlJ3vhy7iQ7EOR9Lak3sV7befitc20dwwCzn/9aj5RllVHfJDOYu2Wrauzgos8+h7s6Uxove2ZyEEZ3bVDNpdFnfgSwOVeJ6TDyE6TlbeoYY0CdsKZn6lmuQnF+ha8g8QSDc0faZOI/YYQGYLrzA0gz+RzQuzxlkh7i7lOQji+PhT/4WZhYoXK+Z8pLYGRc7h2Yl75emn2azhmFKb9TPmhtoislw3oXydcikcSJEFHM6vHQTzhywXhNB9ff/BuKX7nWBtdxauMLrDorKi8jAn4e/B6Ok+xdFX/WDYEyEEA11HUSIq4I+BKz4rPeluXmHFFO4nAiqhELmzItD/sO5tlO+2/8Nr/RJ1wkdRzlNd3261Js/yij6r32otv84EWoCTCpQrfS1xOULDhxugatHTr5E7TwPJxJNDv0Yl9As7AvhCJ39C+lQLzBSp+w6to91f5nC0u0ywNwTfkCRgaxG5OZ8KHfGc06ONLgw9J2ShrkOFfzdtlImHParLk0NW6ITv/f9a46LvyR8WCf6i5kQwPJw7uUbtZXbaa0jrwJgIJppR7VHKKgJavIBKDlDO+Fp+szPrjfS62q1M99NLRqnE6vUChwrSXO203J0DFdLbVBReebPvcXn/C8cS6bDpnpu2kmegKpEoJ4eu3Kfl+iBLqNJShzbY0QsPvklU=
+  file: ./target/wololo-bot.jar
+  skip_cleanup: true
+  draft: true
